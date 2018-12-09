@@ -43,9 +43,17 @@
             <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem x:Name="menuFile" Header="_File">
                     <MenuItem x:Name="menuOpen" Header="_Open" Click="MenuOpen_Click" />
-                    <MenuItem x:Name="menuSave" Header="_Save" />
+                    <MenuItem x:Name="menuSave" Header="_Save" Click="MenuSave_Click" />
                     <Separator />
                     <MenuItem x:Name="menuExit" Header="_Exit" Click="MenuExit_Click" />
+                </MenuItem>
+                <MenuItem x:Name="menuOptions" Header="_Options">
+                    <MenuItem x:Name="menuFormat" Header="_Format">
+                        <MenuItem Header="YUV 4:4:4" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked" IsChecked="True"/>
+                        <MenuItem Header="YUV 4:2:2" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
+                        <MenuItem Header="YUV 4:2:0" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
+                    </MenuItem>
+                    <MenuItem x:Name="menuSize" Header="Set size..."/>
                 </MenuItem>
             </Menu>
             <Grid x:Name="mainGrid">
@@ -61,6 +69,8 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
+                <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False"/>
+                <MediaElement x:Name="mediaViewer" HorizontalAlignment="Left" Height="250" Margin="432,10,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden"/>
             </Grid>
         </DockPanel>
     </Grid>
