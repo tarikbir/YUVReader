@@ -70,7 +70,7 @@
                     </Label.Foreground>
                 </Label>
                 <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False"/>
-                <MediaElement x:Name="mediaViewer" HorizontalAlignment="Left" Height="250" Margin="432,10,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden"/>
+                <MediaElement x:Name="mediaViewer" Source="akiyo_qcif.yuv" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="250" Margin="432,10,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden"/>
             </Grid>
         </DockPanel>
     </Grid>
