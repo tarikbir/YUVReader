@@ -57,10 +57,14 @@
                 </MenuItem>
             </Menu>
             <Grid x:Name="mainGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="17*"/>
+                    <ColumnDefinition Width="777*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.Background>
                     <ImageBrush ImageSource="res/background.jpg" Stretch="UniformToFill" Opacity="0.7"/>
                 </Grid.Background>
-                <Label x:Name="lblNoFileSelectedError" Content="No file selected..." FontStyle="Italic" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,60">
+                <Label x:Name="lblNoFileSelectedError" Content="No file selected..." FontStyle="Italic" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="202.486,134,219.6,194.4" Grid.Column="1">
                     <Label.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF646464" Offset="0"/>
@@ -69,8 +73,10 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False"/>
-                <MediaElement x:Name="mediaViewer" Source="akiyo_qcif.yuv" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="250" Margin="432,10,0,0" VerticalAlignment="Top" Width="350" Visibility="Hidden"/>
+                <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2"/>
+                <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2" Click="btnPlay_Click"/>
+                <MediaElement x:Name="mediaViewer" HorizontalAlignment="Left" Height="250" Margin="415.486,10,0,0" VerticalAlignment="Top" Visibility="Hidden" Width="350" LoadedBehavior="Manual" Grid.Column="1"/>
+                <Button x:Name="btnPause" Content="Pause" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnPause_Click"/>
             </Grid>
         </DockPanel>
     </Grid>

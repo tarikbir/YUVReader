@@ -14,24 +14,45 @@ namespace YUVReader
         public MainWindow()
         {
             InitializeComponent();
+            //IsPlaying(false);
         }
+
+        /*private void IsPlaying(bool controller)
+        {
+            btnControl.IsEnabled = controller;
+        }*/
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.FileName = "YUV";
             openFileDialog.Filter = "YUV files (*.yuv)|*.yuv";
             openFileDialog.Title = "Select a valid YUV file...";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            if (openFileDialog.ShowDialog() != true) return;
-            lblNoFileSelectedError.Visibility = Visibility.Hidden;
-            mainGrid.Background.Opacity = 0.4;
-            btnReadFile.IsEnabled = true;
+            //Nullable<bool> result = openFileDialog.ShowDialog();
 
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MessageBox.Show(openFileDialog.FileName);
+                lblNoFileSelectedError.Visibility = Visibility.Hidden;
+                mediaViewer.Source = new Uri(openFileDialog.FileName);
+                mainGrid.Background.Opacity = 0.4;
+                btnReadFile.IsEnabled = true;
+                btnPlay.IsEnabled = true;
+                mediaViewer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                return;
+            }
             var bytes = File.ReadAllBytes(openFileDialog.FileName);
 
             var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
 
             //mediaViewer.Source = openFileDialog.OpenFile();
+            //mediaViewer.Visibility = Visibility.Visible;
+            //mediaViewer.LoadedBehavior = MediaState.Manual;
+            //mediaViewer.Play();
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -70,8 +91,28 @@ namespace YUVReader
             saveFileDialog.Title = "Select a path to save bitmap";
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             if (saveFileDialog.ShowDialog() != true) return;
-
             //btmp.Save(saveFileDialog.FileName);
         }
+
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            if(mediaViewer.Source != null)
+            {
+                mediaViewer.Play();
+                btnPause.IsEnabled = true;
+            }
+                
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (mediaViewer.CanPause)
+            {
+                mediaViewer.Pause();
+            }
+                
+        }
     }
-}
+
+    }
+
