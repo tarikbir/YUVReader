@@ -53,6 +53,45 @@ namespace YUVReader
                 Console.WriteLine(" ");
             }
 
+            byte[] R = new byte[width * height];
+            byte[] G = new byte[width * height];
+            byte[] B = new byte[width * height];
+
+            for (int i = 0; i < height; i++) //Red
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    R[0] = bytes[i * width + j];
+                    Console.Write(R[0]);
+                }
+                Console.WriteLine(" ");
+            }
+
+            for (int i = 0; i < height; i++) //Green
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    R[1] = bytes[i * width + j];
+                    Console.Write(R[1]);
+                }
+                Console.WriteLine(" ");
+            }
+
+            for (int i = 0; i < height; i++) //Blue
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    R[2] = bytes[i * width + j];
+                    Console.Write(R[2]);
+                }
+                Console.WriteLine(" ");
+            }
+
+
+
+
+
+
             //Bitmap pic = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
 
