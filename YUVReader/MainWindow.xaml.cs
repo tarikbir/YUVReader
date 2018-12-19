@@ -14,13 +14,7 @@ namespace YUVReader
         public MainWindow()
         {
             InitializeComponent();
-            //IsPlaying(false);
         }
-
-        /*private void IsPlaying(bool controller)
-        {
-            btnControl.IsEnabled = controller;
-        }*/
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -29,7 +23,6 @@ namespace YUVReader
             openFileDialog.Filter = "YUV files (*.yuv)|*.yuv";
             openFileDialog.Title = "Select a valid YUV file...";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //Nullable<bool> result = openFileDialog.ShowDialog();
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -47,13 +40,34 @@ namespace YUVReader
             }
             var bytes = File.ReadAllBytes(openFileDialog.FileName);
 
-            var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
+
+            var width = 376;
+            var height = 288;
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    Console.Write(bytes[i*width+j]);
+                }
+                Console.WriteLine(" ");
+            }
+
+            //Bitmap pic = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+
+
+
+
+            //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
+
 
             //mediaViewer.Source = openFileDialog.OpenFile();
             //mediaViewer.Visibility = Visibility.Visible;
             //mediaViewer.LoadedBehavior = MediaState.Manual;
             //mediaViewer.Play();
         }
+
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
