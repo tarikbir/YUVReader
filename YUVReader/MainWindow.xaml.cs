@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using Accord.Video.FFMPEG;
 using YuvFormatter;
 using System.IO;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace YUVReader
 {
@@ -40,62 +42,42 @@ namespace YUVReader
             }
             var bytes = File.ReadAllBytes(openFileDialog.FileName);
 
-
-            var width = 376;
-            var height = 288;
-
-            for (int i = 0; i < height; i++)
+            int width = 176, height = 144, pixelCount = width * height, frame;
+            if (chOption444.IsChecked)
             {
-                for (int j = 0; j < width; j++)
-                {
-                    Console.Write(bytes[i*width+j]);
-                }
-                Console.WriteLine(" ");
+                frame = bytes.Length / (pixelCount * 3);
             }
-
-            byte[] R = new byte[width * height];
-            byte[] G = new byte[width * height];
-            byte[] B = new byte[width * height];
-
-            for (int i = 0; i < height; i++) //Red
+            else if (chOption422.IsChecked)
             {
-                for (int j = 0; j < width; j++)
-                {
-                    R[0] = bytes[i * width + j];
-                    Console.Write(R[0]);
-                }
-                Console.WriteLine(" ");
+                frame = bytes.Length / (pixelCount * 2);
             }
-
-            for (int i = 0; i < height; i++) //Green
+            else if (chOption420.IsChecked)
             {
-                for (int j = 0; j < width; j++)
+                frame = (bytes.Length * 2) / (pixelCount * 3);
+                int yCount = pixelCount * 2 / 3, uCount = yCount/4, vCount = uCount;
+                for (int f = 0; f < frame; f++)
                 {
-                    R[1] = bytes[i * width + j];
-                    Console.Write(R[1]);
+                    int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    for (int p = f*pixelCount; p < ymax; p++)
+                    {
+                        y[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = ymax; p < umax; p++)
+                    {
+                        u[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = umax; p < vmax; p++)
+                    {
+                        v[i++] = bytes[p];
+                    }
                 }
-                Console.WriteLine(" ");
             }
-
-            for (int i = 0; i < height; i++) //Blue
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    R[2] = bytes[i * width + j];
-                    Console.Write(R[2]);
-                }
-                Console.WriteLine(" ");
-            }
-
-
-
-
-
-
-            //Bitmap pic = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-
-
+            else
+                MessageBox.Show("Error");
+            
 
 
             //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
@@ -117,7 +99,7 @@ namespace YUVReader
         {
             foreach (MenuItem item in menuFormat.Items)
             {
-                if(sender != item)
+                if (sender != item)
                 {
                     item.Unchecked -= MenuFormat_Unchecked;
                     item.IsChecked = false;
@@ -149,12 +131,12 @@ namespace YUVReader
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            if(mediaViewer.Source != null)
+            if (mediaViewer.Source != null)
             {
                 mediaViewer.Play();
                 btnPause.IsEnabled = true;
             }
-                
+
         }
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
@@ -163,9 +145,9 @@ namespace YUVReader
             {
                 mediaViewer.Pause();
             }
-                
+
         }
     }
 
-    }
+}
 

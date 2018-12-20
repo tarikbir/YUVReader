@@ -49,9 +49,9 @@
                 </MenuItem>
                 <MenuItem x:Name="menuOptions" Header="_Options">
                     <MenuItem x:Name="menuFormat" Header="_Format">
-                        <MenuItem Header="YUV 4:4:4" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked" IsChecked="True"/>
-                        <MenuItem Header="YUV 4:2:2" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
-                        <MenuItem Header="YUV 4:2:0" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
+                        <MenuItem x:Name="chOption444" Header="YUV 4:4:4" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked" IsChecked="True"/>
+                        <MenuItem x:Name="chOption422" Header="YUV 4:2:2" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
+                        <MenuItem x:Name="chOption420" Header="YUV 4:2:0" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
                     </MenuItem>
                     <MenuItem x:Name="menuSize" Header="Set size..."/>
                 </MenuItem>
@@ -77,6 +77,7 @@
                 <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2" Click="btnPlay_Click"/>
                 <MediaElement x:Name="mediaViewer" HorizontalAlignment="Left" Height="250" Margin="415.486,10,0,0" VerticalAlignment="Top" Visibility="Hidden" Width="350" LoadedBehavior="Manual" Grid.Column="1"/>
                 <Button x:Name="btnPause" Content="Pause" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnPause_Click"/>
+                <Image x:Name="image1" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="556.2,34,0,0" VerticalAlignment="Top" Width="100"/>
             </Grid>
         </DockPanel>
     </Grid>
