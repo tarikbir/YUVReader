@@ -30,11 +30,9 @@ namespace YUVReader
             {
                 MessageBox.Show(openFileDialog.FileName);
                 lblNoFileSelectedError.Visibility = Visibility.Hidden;
-                mediaViewer.Source = new Uri(openFileDialog.FileName);
                 mainGrid.Background.Opacity = 0.4;
                 btnReadFile.IsEnabled = true;
                 btnPlay.IsEnabled = true;
-                mediaViewer.Visibility = Visibility.Visible;
             }
             else
             {
@@ -46,20 +44,62 @@ namespace YUVReader
             if (chOption444.IsChecked)
             {
                 frame = bytes.Length / (pixelCount * 3);
+                int yCount = pixelCount * 1 / 3, uCount = yCount, vCount = uCount;
+                for (int f = 0; f < frame; f++)
+                {
+                    int i = 0, ymax = ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    for (int p = f * pixelCount; p < ymax; p++)
+                    {
+                        y[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = ymax; p < umax; p++)
+                    {
+                        u[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = umax; p < vmax; p++)
+                    {
+                        v[i++] = bytes[p];
+                    }
+
+                }
             }
             else if (chOption422.IsChecked)
             {
                 frame = bytes.Length / (pixelCount * 2);
-            }
-            else if (chOption420.IsChecked)
-            {
-                frame = (bytes.Length * 2) / (pixelCount * 3);
-                int yCount = pixelCount * 2 / 3, uCount = yCount/4, vCount = uCount;
+                int yCount = pixelCount * 2 / 3, uCount = yCount / 8, vCount = uCount;
                 for (int f = 0; f < frame; f++)
                 {
                     int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
                     byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
-                    for (int p = f*pixelCount; p < ymax; p++)
+                    for (int p = f * pixelCount; p < ymax; p++)
+                    {
+                        y[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = ymax; p < umax; p++)
+                    {
+                        u[i++] = bytes[p];
+                    }
+                    i = 0;
+                    for (int p = umax; p < vmax; p++)
+                    {
+                        v[i++] = bytes[p];
+                    }
+
+                }
+            }
+            else if (chOption420.IsChecked)
+            {
+                frame = (bytes.Length * 2) / (pixelCount * 3);
+                int yCount = pixelCount * 2 / 3, uCount = yCount / 4, vCount = uCount; 
+                for (int f = 0; f < frame; f++)
+                {
+                    int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    for (int p = f * pixelCount; p < ymax; p++)
                     {
                         y[i++] = bytes[p];
                     }
@@ -131,20 +171,29 @@ namespace YUVReader
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            if (mediaViewer.Source != null)
+            if (Image.Source != null)
             {
-                mediaViewer.Play();
-                btnPause.IsEnabled = true;
+                
             }
 
         }
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
         {
-            if (mediaViewer.CanPause)
+            if (Image.Source != null)
             {
-                mediaViewer.Pause();
+              
             }
+
+        }
+
+        private void btnForward_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

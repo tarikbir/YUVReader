@@ -75,9 +75,10 @@
                 </Label>
                 <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2"/>
                 <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2" Click="btnPlay_Click"/>
-                <MediaElement x:Name="mediaViewer" HorizontalAlignment="Left" Height="250" Margin="415.486,10,0,0" VerticalAlignment="Top" Visibility="Hidden" Width="350" LoadedBehavior="Manual" Grid.Column="1"/>
                 <Button x:Name="btnPause" Content="Pause" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnPause_Click"/>
-                <Image x:Name="image1" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="556.2,34,0,0" VerticalAlignment="Top" Width="100"/>
+                <Button x:Name="btnForward" Content="Move Forward" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnForward_Click"/>
+                <Button x:Name="btnBack" Content="Move Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnBack_Click"/>
+                <Image x:Name="Image" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="556.2,34,0,0" VerticalAlignment="Top" Width="100"/>
             </Grid>
         </DockPanel>
     </Grid>
