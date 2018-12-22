@@ -48,71 +48,100 @@ namespace YUVReader
                 for (int f = 0; f < frame; f++)
                 {
                     int i = 0, ymax = ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    var RGB = new byte[3 * yCount];
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount];
                     for (int p = f * pixelCount; p < ymax; p++)
                     {
                         y[i++] = bytes[p];
+                        r[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = ymax; p < umax; p++)
                     {
                         u[i++] = bytes[p];
+                        g[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = umax; p < vmax; p++)
                     {
                         v[i++] = bytes[p];
+                        b[i++] = y[i++];
                     }
+                    r.CopyTo(RGB, 0);
+                    g.CopyTo(RGB, yCount);
+                    b.CopyTo(RGB, yCount);
+
+                    MemoryStream ms = new MemoryStream(RGB);
+                    Bitmap bitmap = new Bitmap(ms);
 
                 }
             }
             else if (chOption422.IsChecked)
             {
                 frame = bytes.Length / (pixelCount * 2);
-                int yCount = pixelCount * 2 / 3, uCount = yCount / 8, vCount = uCount;
+                int yCount = pixelCount * 2 / 3, uCount = yCount / 4, vCount = uCount;
                 for (int f = 0; f < frame; f++)
                 {
                     int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    var RGB = new byte[3 * yCount];
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount];
                     for (int p = f * pixelCount; p < ymax; p++)
                     {
                         y[i++] = bytes[p];
+                        r[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = ymax; p < umax; p++)
                     {
                         u[i++] = bytes[p];
+                        g[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = umax; p < vmax; p++)
                     {
                         v[i++] = bytes[p];
+                        b[i++] = y[i++];
                     }
+                    r.CopyTo(RGB, 0);
+                    g.CopyTo(RGB, yCount);
+                    b.CopyTo(RGB, yCount);
 
+                    MemoryStream ms = new MemoryStream(RGB);
+                    Bitmap bitmap = new Bitmap(ms);
                 }
             }
             else if (chOption420.IsChecked)
             {
                 frame = (bytes.Length * 2) / (pixelCount * 3);
-                int yCount = pixelCount * 2 / 3, uCount = yCount / 4, vCount = uCount; 
+                int yCount = pixelCount * 2 / 3, uCount = yCount / 8, vCount = uCount; //4
                 for (int f = 0; f < frame; f++)
                 {
                     int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    var RGB = new byte[3 * yCount];
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount]; ;
                     for (int p = f * pixelCount; p < ymax; p++)
                     {
                         y[i++] = bytes[p];
+                        r[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = ymax; p < umax; p++)
                     {
                         u[i++] = bytes[p];
+                        g[i++] = y[i++];
                     }
                     i = 0;
                     for (int p = umax; p < vmax; p++)
                     {
                         v[i++] = bytes[p];
+                        b[i++] = y[i++];
                     }
+                    r.CopyTo(RGB, 0);
+                    g.CopyTo(RGB, yCount);
+                    b.CopyTo(RGB, yCount);
+
+                    MemoryStream ms = new MemoryStream(RGB);
+                    Bitmap bitmap = new Bitmap(ms);
                 }
             }
             else
