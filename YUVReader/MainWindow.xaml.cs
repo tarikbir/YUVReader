@@ -1,23 +1,21 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.IO;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace YUVReader
 {
     public partial class MainWindow : Window
     {
-        int sizeHeight, sizeWidth;
+        System.Windows.Threading.DispatcherTimer timer;
+        RGBVideo openedVideo;
+        int frameShowing = 0;
 
         public MainWindow()
         {
             InitializeComponent();
-            sizeHeight = 0;
-            sizeWidth = 0;
         }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
@@ -31,11 +29,12 @@ namespace YUVReader
 
             if (openFileDialog.ShowDialog() == true)
             {
-                //MessageBox.Show(openFileDialog.FileName);
+                PropertiesPage propertySet = new PropertiesPage(openFileDialog.FileName);
+                if (!propertySet.ShowDialog() ?? false) return;
+                openedVideo = new RGBVideo(propertySet.OpenedVideo);
                 lblNoFileSelectedError.Visibility = Visibility.Hidden;
                 mainGrid.Background.Opacity = 0.4;
-                btnReadFile.IsEnabled = true;
-                btnPlay.IsEnabled = true;
+                btnImage.Visibility = Visibility.Visible;
             }
             else
             {
@@ -52,59 +51,52 @@ namespace YUVReader
                 MessageBox.Show("File cannot be read!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
-            int width = 176, height = 144;
 
-            if (chOption444.IsChecked)
-            {
-                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV444);
-            }
-            else if (chOption422.IsChecked)
-            {
-                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV422);
-            }
-            else if (chOption420.IsChecked)
-            {
-                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV420);
-            }
-            else
-                MessageBox.Show("Unkown error while selecting the format!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            int width = openedVideo.Width, height = openedVideo.Height;
+            openedVideo = RGBConvert.ConvertRGB(fileData, width, height, openedVideo.Format);
+            UpdateImage();
+        }
 
-                //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
-
-
-                //mediaViewer.Source = openFileDialog.OpenFile();
-                //mediaViewer.Visibility = Visibility.Visible;
-                //mediaViewer.LoadedBehavior = MediaState.Manual;
-                //mediaViewer.Play();
-            }
-
+        private void UpdateImage()
+        {
+            if (frameShowing >= openedVideo.Frame) frameShowing = 0;
+            MemoryStream ms = new MemoryStream();
+            openedVideo.Source[frameShowing].Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            Byte[] bytes = ms.ToArray();
+            var imageSource = new BitmapImage();
+            imageSource.BeginInit();
+            imageSource.StreamSource = ms;
+            imageSource.EndInit();
+            imageOpened.Source = imageSource;
+        }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void MenuFormat_Checked(object sender, RoutedEventArgs e)
+        private void BtnImage_Click(object sender, RoutedEventArgs e)
         {
-            foreach (MenuItem item in menuFormat.Items)
+            if (openedVideo == null || openedVideo.Source == null) return;
+            if (timer != null)
             {
-                if (sender != item)
-                {
-                    item.Unchecked -= MenuFormat_Unchecked;
-                    item.IsChecked = false;
-                    item.Unchecked += MenuFormat_Unchecked;
-                }
+                if (timer.IsEnabled) timer.Stop();
+                else timer.Start();
+            }
+            else
+            {
+                timer = new System.Windows.Threading.DispatcherTimer();
+                timer.Tick += TimerUpdate;
+                timer.Interval = new TimeSpan(300000);
+                timer.Start();
             }
         }
 
-        private void MenuFormat_Unchecked(object sender, RoutedEventArgs e)
+        private void TimerUpdate(object sender, EventArgs e)
         {
-            var item = (sender as MenuItem);
-            item.Checked -= MenuFormat_Checked;
-            item.IsChecked = true;
-            item.Checked += MenuFormat_Checked;
-            e.Handled = true;
+            UpdateImage();
+            frameShowing++;
+            lbatyar.Content = "FRAME SHOWING: " + frameShowing;
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
@@ -123,27 +115,6 @@ namespace YUVReader
                 Bitmap bitmap = new Bitmap(saveFileDialog.FileName);
                 //bitmap.Save(saveFileDialog.InitialDirectory + "//file//bit" + FRAME + ".bmp");
             }
-            
-        }
-
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnPause_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnForward_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 

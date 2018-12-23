@@ -21,7 +21,7 @@ namespace YUVReader
         public RGBVideo(YUV.YUVFormat format, int width, int height): this(null, format, 0, width, height)
         { }
 
-        public RGBVideo(YUV.YUVFormat format, int frame, int width, int height): this(null, format, frame, width, height)
+        public RGBVideo(YUV.YUVFormat format, int frame, int width, int height): this(new Bitmap[frame], format, frame, width, height)
         { }
 
         public RGBVideo(Bitmap[] source, YUV.YUVFormat format, int frame, int width, int height)
@@ -32,5 +32,15 @@ namespace YUVReader
             Width = width;
             Height = height;
         }
+
+        public RGBVideo(RGBVideo rGBVideo)
+        {
+            Source = rGBVideo.Source;
+            Format = rGBVideo.Format;
+            Frame = rGBVideo.Frame;
+            Width = rGBVideo.Width;
+            Height = rGBVideo.Height;
+        }
+
     }
 }

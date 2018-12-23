@@ -27,16 +27,15 @@ namespace YUVReader
 
         private static RGBVideo ConvertYUV420(byte[] data, int width, int height)
         {
-            RGBVideo video = new RGBVideo();
             int pixelCount = width * height,
                 frame = (data.Length * 2) / (pixelCount * 3),
                 yCount = pixelCount,
-                uCount = pixelCount / 6,
+                uCount = pixelCount / 4,
                 vCount = uCount,
-                byteCount = pixelCount * 3;
-
+                byteCount = pixelCount * 3 / 2;
+            RGBVideo video = new RGBVideo(YUV.YUVFormat.YUV420, frame, width, height);
             byte[] rgbData = new byte[yCount * 3];
-            for (int f = 0, j = 0; f < frame; f++)
+            for (int f = 0, j = 0; f < frame; f++, j = 0)
             {
                 //Unreadable, but compact :)
                 byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
@@ -51,6 +50,10 @@ namespace YUVReader
                            ImageLockMode.WriteOnly, bitmap.PixelFormat);
                 Marshal.Copy(rgbData, 0, bitmapData.Scan0, rgbData.Length);
                 bitmap.UnlockBits(bitmapData);
+
+                video.Source[f] = bitmap;
+
+                //bitmap.Save("C:\\Users\\Tarik\\Desktop\\file\\bit" + f + ".bmp");
             }
 
             return video;
@@ -63,7 +66,7 @@ namespace YUVReader
                 yCount = (pixelCount * 2) / 3,
                 uCount = yCount / 2,
                 vCount = uCount,
-                byteCount = pixelCount * 3;
+                byteCount = pixelCount * 3 / 2;
 
             return null;
         }
@@ -75,7 +78,7 @@ namespace YUVReader
                 yCount = pixelCount / 3,
                 uCount = yCount,
                 vCount = yCount,
-                byteCount = pixelCount * 3;
+                byteCount = pixelCount * 3 / 2;
 
             return null;
         }

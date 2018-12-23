@@ -47,14 +47,6 @@
                     <Separator />
                     <MenuItem x:Name="menuExit" Header="_Exit" Click="MenuExit_Click" />
                 </MenuItem>
-                <MenuItem x:Name="menuOptions" Header="_Options">
-                    <MenuItem x:Name="menuFormat" Header="_Format">
-                        <MenuItem x:Name="chOption444" Header="YUV 4:4:4" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked" IsChecked="True"/>
-                        <MenuItem x:Name="chOption422" Header="YUV 4:2:2" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
-                        <MenuItem x:Name="chOption420" Header="YUV 4:2:0" IsCheckable="True" Checked="MenuFormat_Checked" Unchecked="MenuFormat_Unchecked"/>
-                    </MenuItem>
-                    <MenuItem x:Name="menuSize" Header="Set size..."/>
-                </MenuItem>
             </Menu>
             <Grid x:Name="mainGrid">
                 <Grid.Background>
@@ -69,12 +61,10 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Button x:Name="btnReadFile" Content="Read File" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2"/>
-                <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.ColumnSpan="2" Click="btnPlay_Click"/>
-                <Button x:Name="btnPause" Content="Pause" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnPause_Click"/>
-                <Button x:Name="btnForward" Content="Move Forward" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnForward_Click"/>
-                <Button x:Name="btnBack" Content="Move Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270.2,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnBack_Click" RenderTransformOrigin="0.795,0.556"/>
-                <Image x:Name="imgFile" HorizontalAlignment="Center" Height="300" VerticalAlignment="Center" Width="300" Margin="0,0,300,300"/>
+                <Button x:Name="btnImage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" ClickMode="Press" Focusable="False" Visibility="Hidden" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="Black" BorderThickness="0" Click="BtnImage_Click">
+                    <Image x:Name="imageOpened" Height="300" Width="300"/>
+                </Button>
+                <Label x:Name="lbatyar" Content="AT yaraa" HorizontalAlignment="Left" Margin="322,62,0,0" VerticalAlignment="Top"/>
             </Grid>
         </DockPanel>
     </Grid>
