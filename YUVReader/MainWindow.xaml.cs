@@ -13,16 +13,11 @@ namespace YUVReader
     {
         int sizeHeight, sizeWidth;
 
-        enum YUVFormat
-        {
-            YUV444 = 444,
-            YUV422 = 422,
-            YUV420 = 420
-        }
-
         public MainWindow()
         {
             InitializeComponent();
+            sizeHeight = 0;
+            sizeWidth = 0;
         }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
@@ -32,10 +27,11 @@ namespace YUVReader
             openFileDialog.Filter = "YUV files (*.yuv)|*.yuv";
             openFileDialog.Title = "Select a valid YUV file...";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            byte[] fileData;
 
             if (openFileDialog.ShowDialog() == true)
             {
-                MessageBox.Show(openFileDialog.FileName);
+                //MessageBox.Show(openFileDialog.FileName);
                 lblNoFileSelectedError.Visibility = Visibility.Hidden;
                 mainGrid.Background.Opacity = 0.4;
                 btnReadFile.IsEnabled = true;
@@ -43,64 +39,34 @@ namespace YUVReader
             }
             else
             {
+                MessageBox.Show("No file has been selected!");
                 return;
             }
-            var bytes = File.ReadAllBytes(openFileDialog.FileName);
+
+            try
+            {
+                fileData = File.ReadAllBytes(openFileDialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("File cannot be read!\n" + ex.Message);
+                return;
+            }
+            
             int width = 176, height = 144, pixelCount = width * height, frame;
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 
             if (chOption444.IsChecked)
             {
-                frame = bytes.Length / (pixelCount * 3);
-                int yCount = pixelCount / 3, uCount = yCount, vCount = uCount;
-                for(int f = 0; f < frame; f++)
-                {
-
-                }
+                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV444);
             }
             else if (chOption422.IsChecked)
             {
-                frame = bytes.Length / (pixelCount * 2);
-                int yCount = pixelCount * 2 / 3, uCount = yCount / 2, vCount = uCount;
+                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV422);
             }
             else if (chOption420.IsChecked)
             {
-                frame = (bytes.Length * 2) / (pixelCount * 3);
-                int yCount = pixelCount, uCount = pixelCount / 6, vCount = uCount;
-                int byteCount = pixelCount * 3;
-                for (int f = 0; f < frame; f++)
-                {
-                    int i = 0, j = 0;
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
-                    for (int p = 0; p < yCount; p++)
-                    {
-                        y[i++] = bytes[f * byteCount + j++];
-                    }
-                    i = 0;
-                    for (int p = 0; p < uCount; p++)
-                    {
-                        u[i++] = bytes[f * byteCount + j++];
-                    }
-                    i = 0;
-                    for (int p = 0; p < vCount; p++)
-                    {
-                        v[i++] = bytes[f * byteCount + j++];
-                    }
-
-                    byte[] data = new byte[yCount * 3];
-                    for (int d = 0; d < yCount * 3; d++)
-                    {
-                        data[d] = y[d / 3];
-                    }
-
-                    BitmapData bmpData = bitmap.LockBits(
-                       new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                       ImageLockMode.WriteOnly, bitmap.PixelFormat);
-                    Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
-                    bitmap.UnlockBits(bmpData);
-
-                    bitmap.Save(openFileDialog.InitialDirectory + "//file//bit" + f + ".bmp");
-                }
+                var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV420);
             }
             else
                 MessageBox.Show("Error");
