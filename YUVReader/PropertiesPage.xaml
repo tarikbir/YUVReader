@@ -16,11 +16,11 @@
             </ComboBox>
             <Label x:Name="lbWidth" Content="Width" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16,46,0,0"/>
             <TextBox x:Name="txtWidth" Height="23" TextWrapping="Wrap" Text="" Margin="63,47,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="204" PreviewTextInput="TxtWidth_PreviewTextInput"/>
-            <Button x:Name="btnWidthDefault" Content="Default" Height="20" Margin="272,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="BtnWidthDefault_Click"/>
+            <Button x:Name="btnWidthDefault" Content="Default" Height="20" Margin="272,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="BtnWidthDefault_Click" IsTabStop="False"/>
             <Label x:Name="lbHeight" Content="Height" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,82,0,0"/>
             <TextBox x:Name="txtHeight" Height="23" TextWrapping="Wrap" Text="" Margin="63,83,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="204" PreviewTextInput="TxtHeight_PreviewTextInput"/>
-            <Button x:Name="btnHeightDefault" Content="Default" Height="20" Margin="272,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="BtnHeightDefault_Click"/>
+            <Button x:Name="btnHeightDefault" Content="Default" Height="20" Margin="272,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="BtnHeightDefault_Click" IsTabStop="False"/>
         </Grid>
-        <Button x:Name="btnApply" Content="Apply" Width="125" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="BtnApply_Click"/>
+        <Button x:Name="btnApply" Content="Apply" Width="125" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="BtnApply_Click" IsDefault="True"/>
     </Grid>
 </Window>

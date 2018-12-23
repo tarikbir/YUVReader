@@ -42,8 +42,8 @@
         <DockPanel>
             <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem x:Name="menuFile" Header="_File">
-                    <MenuItem x:Name="menuOpen" Header="_Open" Click="MenuOpen_Click" />
-                    <MenuItem x:Name="menuSave" Header="_Save All" Click="MenuSave_Click" />
+                    <MenuItem x:Name="menuOpen" Header="_Import YUV" Click="MenuOpen_Click" />
+                    <MenuItem x:Name="menuSave" Header="E_xtract frames as .bmp" Click="MenuSave_Click" />
                     <Separator />
                     <MenuItem x:Name="menuExit" Header="_Exit" Click="MenuExit_Click" />
                 </MenuItem>
@@ -61,10 +61,25 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Button x:Name="btnImage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" ClickMode="Press" Focusable="False" Visibility="Hidden" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="Black" BorderThickness="0" Click="BtnImage_Click">
-                    <Image x:Name="imageOpened" Height="300" Width="300"/>
-                </Button>
-                <Label x:Name="lbatyar" Content="AT yaraa" HorizontalAlignment="Left" Margin="322,62,0,0" VerticalAlignment="Top"/>
+                <Grid x:Name="grdFileInfo" Visibility="Hidden">
+                    <Button x:Name="btnImage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" ClickMode="Press" Focusable="False" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="Black" BorderThickness="0" Click="BtnImage_Click">
+                        <Image x:Name="imageOpened" Height="300" Width="300"/>
+                    </Button>
+                    <Label x:Name="lbFileName" Content="Filename:" HorizontalAlignment="Left" Margin="322,20,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtFileName" Content="" HorizontalAlignment="Left" Margin="387,20,0,0" VerticalAlignment="Top" Width="395"/>
+                    <Label x:Name="lbFrame" Content="Frame:" HorizontalAlignment="Left" Margin="322,50,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtFrame" Content="" HorizontalAlignment="Left" Margin="372,50,0,0" VerticalAlignment="Top" Width="410"/>
+                    <Label x:Name="lbWidth" Content="Width:" HorizontalAlignment="Left" Margin="322,80,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtWidth" Content="" HorizontalAlignment="Left" Margin="372,80,0,0" VerticalAlignment="Top" Width="410"/>
+                    <Label x:Name="lbHeight" Content="Height:" HorizontalAlignment="Left" Margin="322,110,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtHeight" Content="" HorizontalAlignment="Left" Margin="375,110,0,0" VerticalAlignment="Top" Width="407"/>
+                    <Label x:Name="lbCreationTime" Content="Date Created:" HorizontalAlignment="Left" Margin="322,140,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtCreationTime" Content="" HorizontalAlignment="Left" Margin="409,140,0,0" VerticalAlignment="Top" Width="373"/>
+                    <Label x:Name="lbAttributes" Content="Attributes:" HorizontalAlignment="Left" Margin="322,170,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtAttributes" Content="" HorizontalAlignment="Left" Margin="392,170,0,0" VerticalAlignment="Top" Width="390"/>
+                    <Label x:Name="lbCurrentFrame" Content="Current:" HorizontalAlignment="Left" Margin="20,327,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtCurrentFrame" Content="0" HorizontalAlignment="Left" Margin="77,327,0,0" VerticalAlignment="Top" Width="245"/>
+                </Grid>
             </Grid>
         </DockPanel>
     </Grid>

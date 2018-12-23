@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -12,16 +11,35 @@ namespace YUVReader
         System.Windows.Threading.DispatcherTimer timer;
         RGBVideo openedVideo;
         int frameShowing = 0;
+        bool fileOpened = false;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        private void ResetWindow()
+        {
+            lblNoFileSelectedError.Visibility = Visibility.Visible;
+            mainGrid.Background.Opacity = 0.7;
+            grdFileInfo.Visibility = Visibility.Hidden;
+            openedVideo = null;
+            frameShowing = 0;
+            timer = null;
+            txtAttributes.Content = String.Empty;
+            txtCreationTime.Content = String.Empty;
+            txtCurrentFrame.Content = "1";
+            txtFileName.Content = String.Empty;
+            txtFrame.Content = String.Empty;
+            txtHeight.Content = String.Empty;
+            txtWidth.Content = String.Empty;
+            fileOpened = false;
+        }
+
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
+            if (fileOpened) { ResetWindow(); }
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.FileName = "YUV";
             openFileDialog.Filter = "YUV files (*.yuv)|*.yuv";
             openFileDialog.Title = "Select a valid YUV file...";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -31,14 +49,19 @@ namespace YUVReader
             {
                 PropertiesPage propertySet = new PropertiesPage(openFileDialog.FileName);
                 if (!propertySet.ShowDialog() ?? false) return;
+                fileOpened = true;
                 openedVideo = new RGBVideo(propertySet.OpenedVideo);
                 lblNoFileSelectedError.Visibility = Visibility.Hidden;
                 mainGrid.Background.Opacity = 0.4;
-                btnImage.Visibility = Visibility.Visible;
+                grdFileInfo.Visibility = Visibility.Visible;
+                txtFileName.Content = openFileDialog.FileName;
+                txtHeight.Content = openedVideo.Height;
+                txtWidth.Content = openedVideo.Width;
+                txtCreationTime.Content = File.GetCreationTime(openFileDialog.FileName);
+                txtAttributes.Content = File.GetAttributes(openFileDialog.FileName).ToString();
             }
             else
             {
-                MessageBox.Show("No file has been selected!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -54,6 +77,8 @@ namespace YUVReader
 
             int width = openedVideo.Width, height = openedVideo.Height;
             openedVideo = RGBConvert.ConvertRGB(fileData, width, height, openedVideo.Format);
+            txtFrame.Content = openedVideo.Frame;
+
             UpdateImage();
         }
 
@@ -95,25 +120,27 @@ namespace YUVReader
         private void TimerUpdate(object sender, EventArgs e)
         {
             UpdateImage();
+            txtCurrentFrame.Content = frameShowing+1;
             frameShowing++;
-            lbatyar.Content = "FRAME SHOWING: " + frameShowing;
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.DefaultExt = "*.bmp";
-            saveFileDialog.Filter = "Bitmap files (*.bmp)|*.bmp";
-            saveFileDialog.Title = "Select a path to save bitmap";
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            if (saveFileDialog.ShowDialog() != true)
+            if (!fileOpened)
             {
+                MessageBox.Show("No file opened to extract as bitmaps!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Select a path to extract bitmaps";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if (saveFileDialog.ShowDialog() == true)
             {
-                Bitmap bitmap = new Bitmap(saveFileDialog.FileName);
-                //bitmap.Save(saveFileDialog.InitialDirectory + "//file//bit" + FRAME + ".bmp");
+                for (int i = 0; i < openedVideo.Frame; i++)
+                {
+                    openedVideo.Source[i].Save(saveFileDialog.FileName + " (" + (i + 1) + ").bmp");
+                }
+                MessageBox.Show("Extraction completed!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

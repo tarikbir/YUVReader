@@ -52,8 +52,6 @@ namespace YUVReader
                 bitmap.UnlockBits(bitmapData);
 
                 video.Source[f] = bitmap;
-
-                //bitmap.Save("C:\\Users\\Tarik\\Desktop\\file\\bit" + f + ".bmp");
             }
 
             return video;
@@ -63,24 +61,66 @@ namespace YUVReader
         {
             int pixelCount = width * height,
                 frame = data.Length / (pixelCount * 2),
-                yCount = (pixelCount * 2) / 3,
+                yCount = pixelCount,
                 uCount = yCount / 2,
                 vCount = uCount,
-                byteCount = pixelCount * 3 / 2;
+                byteCount = pixelCount * 2;
 
-            return null;
+            RGBVideo video = new RGBVideo(YUV.YUVFormat.YUV422, frame, width, height);
+            byte[] rgbData = new byte[yCount * 3];
+            for (int f = 0, j = 0; f < frame; f++, j = 0)
+            {
+                //Unreadable, but compact :)
+                byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                for (int p = 0, i = 0; p < yCount; p++) y[i++] = data[f * byteCount + j++];
+                for (int p = 0, i = 0; p < uCount; p++) u[i++] = data[f * byteCount + j++];
+                for (int p = 0, i = 0; p < vCount; p++) v[i++] = data[f * byteCount + j++];
+                for (int d = 0; d < yCount * 3; d++) rgbData[d] = y[d / 3];
+
+                Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                BitmapData bitmapData = bitmap.LockBits(
+                           new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                           ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                Marshal.Copy(rgbData, 0, bitmapData.Scan0, rgbData.Length);
+                bitmap.UnlockBits(bitmapData);
+
+                video.Source[f] = bitmap;
+            }
+
+            return video;
         }
 
         private static RGBVideo ConvertYUV444(byte[] data, int width, int height)
         {
             int pixelCount = width * height,
                 frame = data.Length / (pixelCount * 3),
-                yCount = pixelCount / 3,
+                yCount = pixelCount,
                 uCount = yCount,
                 vCount = yCount,
-                byteCount = pixelCount * 3 / 2;
+                byteCount = pixelCount * 3;
 
-            return null;
+            RGBVideo video = new RGBVideo(YUV.YUVFormat.YUV444, frame, width, height);
+            byte[] rgbData = new byte[yCount * 3];
+            for (int f = 0, j = 0; f < frame; f++, j = 0)
+            {
+                //Unreadable, but compact :)
+                byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                for (int p = 0, i = 0; p < yCount; p++) y[i++] = data[f * byteCount + j++];
+                for (int p = 0, i = 0; p < uCount; p++) u[i++] = data[f * byteCount + j++];
+                for (int p = 0, i = 0; p < vCount; p++) v[i++] = data[f * byteCount + j++];
+                for (int d = 0; d < yCount * 3; d++) rgbData[d] = y[d / 3];
+
+                Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                BitmapData bitmapData = bitmap.LockBits(
+                           new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                           ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                Marshal.Copy(rgbData, 0, bitmapData.Scan0, rgbData.Length);
+                bitmap.UnlockBits(bitmapData);
+
+                video.Source[f] = bitmap;
+            }
+
+            return video;
         }
 
     }
