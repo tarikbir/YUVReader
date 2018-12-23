@@ -194,8 +194,16 @@ namespace YUVReader
             saveFileDialog.Filter = "Bitmap files (*.bmp)|*.bmp";
             saveFileDialog.Title = "Select a path to save bitmap";
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            if (saveFileDialog.ShowDialog() != true) return;
-            //btmp.Save(saveFileDialog.FileName);
+            if (saveFileDialog.ShowDialog() != true)
+            {
+                return;
+            }
+            else
+            {
+                Bitmap bitmap = new Bitmap(saveFileDialog.FileName);
+                bitmap.Save("C:\\Kullanıcılar\\YasinEmir\\Source\\repos\\tarikbir\\YUVReader\\Image.png");
+            }
+            
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
