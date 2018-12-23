@@ -57,10 +57,6 @@
                 </MenuItem>
             </Menu>
             <Grid x:Name="mainGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="17*"/>
-                    <ColumnDefinition Width="777*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.Background>
                     <ImageBrush ImageSource="res/background.jpg" Stretch="UniformToFill" Opacity="0.7"/>
                 </Grid.Background>
@@ -78,7 +74,7 @@
                 <Button x:Name="btnPause" Content="Pause" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnPause_Click"/>
                 <Button x:Name="btnForward" Content="Move Forward" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnForward_Click"/>
                 <Button x:Name="btnBack" Content="Move Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270.2,330,0,0" Height="30" Width="86" Style="{DynamicResource RoundCorner}" IsEnabled="False" Grid.Column="1" Click="btnBack_Click" RenderTransformOrigin="0.795,0.556"/>
-                <Image x:Name="Image" Grid.Column="1" HorizontalAlignment="Left" Height="300" Margin="450.2,26,0,0" VerticalAlignment="Top" Width="300"/>
+                <Image x:Name="imgFile" HorizontalAlignment="Center" Height="300" VerticalAlignment="Center" Width="300" Margin="0,0,300,300"/>
             </Grid>
         </DockPanel>
     </Grid>

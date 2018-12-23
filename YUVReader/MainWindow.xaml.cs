@@ -2,16 +2,23 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Accord.Video.FFMPEG;
-using YuvFormatter;
 using System.IO;
 using System.Drawing;
-using System.Windows.Media;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace YUVReader
 {
     public partial class MainWindow : Window
     {
+        int sizeHeight, sizeWidth;
+        
+        enum YUVFormat
+        {
+            YUV444 = 444,
+            YUV422 = 422,
+            YUV420 = 420
+        }
 
         public MainWindow()
         {
@@ -39,115 +46,60 @@ namespace YUVReader
                 return;
             }
             var bytes = File.ReadAllBytes(openFileDialog.FileName);
-
             int width = 176, height = 144, pixelCount = width * height, frame;
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+
             if (chOption444.IsChecked)
             {
                 frame = bytes.Length / (pixelCount * 3);
-                int yCount = pixelCount * 1 / 3, uCount = yCount, vCount = uCount;
-                for (int f = 0; f < frame; f++)
-                {
-                    int i = 0, ymax = ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    var RGB = new byte[3 * yCount];
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount];
-                    for (int p = f * pixelCount; p < ymax; p++)
-                    {
-                        y[i++] = bytes[p];
-                        r[i++] = y[i++];
-                    }
-                    i = 0;
-                    for (int p = ymax; p < umax; p++)
-                    {
-                        u[i++] = bytes[p];
-                        g[i++] = y[i++];
-                    }
-                    i = 0;
-                    for (int p = umax; p < vmax; p++)
-                    {
-                        v[i++] = bytes[p];
-                        b[i++] = y[i++];
-                    }
-                    r.CopyTo(RGB, 0);
-                    g.CopyTo(RGB, yCount);
-                    b.CopyTo(RGB, yCount);
-
-                    MemoryStream ms = new MemoryStream(RGB);
-                    Bitmap bitmap = new Bitmap(ms);
-
-                }
+                int yCount = pixelCount / 3, uCount = yCount, vCount = uCount;
             }
             else if (chOption422.IsChecked)
             {
                 frame = bytes.Length / (pixelCount * 2);
-                int yCount = pixelCount * 2 / 3, uCount = yCount / 4, vCount = uCount;
-                for (int f = 0; f < frame; f++)
-                {
-                    int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    var RGB = new byte[3 * yCount];
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount];
-                    for (int p = f * pixelCount; p < ymax; p++)
-                    {
-                        y[i++] = bytes[p];
-                        r[i++] = y[i++];
-                    }
-                    i = 0;
-                    for (int p = ymax; p < umax; p++)
-                    {
-                        u[i++] = bytes[p];
-                        g[i++] = y[i++];
-                    }
-                    i = 0;
-                    for (int p = umax; p < vmax; p++)
-                    {
-                        v[i++] = bytes[p];
-                        b[i++] = y[i++];
-                    }
-                    r.CopyTo(RGB, 0);
-                    g.CopyTo(RGB, yCount);
-                    b.CopyTo(RGB, yCount);
-
-                    MemoryStream ms = new MemoryStream(RGB);
-                    Bitmap bitmap = new Bitmap(ms);
-                }
+                int yCount = pixelCount * 2 / 3, uCount = yCount / 2, vCount = uCount;
             }
             else if (chOption420.IsChecked)
             {
                 frame = (bytes.Length * 2) / (pixelCount * 3);
-                int yCount = pixelCount * 2 / 3, uCount = yCount / 8, vCount = uCount; //4
+                int yCount = pixelCount, uCount = pixelCount/6, vCount = uCount;
+                int byteCount = pixelCount*3;
                 for (int f = 0; f < frame; f++)
                 {
-                    int i = 0, ymax = f * pixelCount + yCount, umax = ymax + uCount, vmax = umax + vCount;
-                    var RGB = new byte[3 * yCount];
-                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount], r = new byte[yCount], g = new byte[yCount], b = new byte[yCount]; ;
-                    for (int p = f * pixelCount; p < ymax; p++)
+                    int i = 0, j = 0;
+                    byte[] y = new byte[yCount], u = new byte[uCount], v = new byte[vCount];
+                    for (int p = 0; p < yCount; p++)
                     {
-                        y[i++] = bytes[p];
-                        r[i++] = y[i++];
+                        y[i++] = bytes[f * byteCount + j++];
                     }
                     i = 0;
-                    for (int p = ymax; p < umax; p++)
+                    for (int p = 0; p < uCount; p++)
                     {
-                        u[i++] = bytes[p];
-                        g[i++] = y[i++];
+                        u[i++] = bytes[f * byteCount + j++];
                     }
                     i = 0;
-                    for (int p = umax; p < vmax; p++)
+                    for (int p = 0; p < vCount; p++)
                     {
-                        v[i++] = bytes[p];
-                        b[i++] = y[i++];
+                        v[i++] = bytes[f * byteCount + j++];
                     }
-                    r.CopyTo(RGB, 0);
-                    g.CopyTo(RGB, yCount);
-                    b.CopyTo(RGB, yCount);
 
-                    MemoryStream ms = new MemoryStream(RGB);
-                    Bitmap bitmap = new Bitmap(ms);
+                    byte[] data = new byte[yCount*3];
+                    for (int d = 0; d < yCount*3; d++)
+                    {
+                        data[d] = y[d / 3];
+                    }
+
+                    BitmapData bmpData = bitmap.LockBits(
+                       new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                       ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                    Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
+                    bitmap.UnlockBits(bmpData);
+
+                    bitmap.Save(openFileDialog.InitialDirectory + "//file//bit" + f + ".bmp");
                 }
             }
             else
                 MessageBox.Show("Error");
-            
-
 
             //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
 
@@ -175,7 +127,6 @@ namespace YUVReader
                     item.Unchecked += MenuFormat_Unchecked;
                 }
             }
-            //seciliobje = (sender as MenuItem).Header.ToString();
         }
 
         private void MenuFormat_Unchecked(object sender, RoutedEventArgs e)
@@ -208,19 +159,11 @@ namespace YUVReader
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            if (Image.Source != null)
-            {
-                
-            }
 
         }
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
         {
-            if (Image.Source != null)
-            {
-              
-            }
 
         }
 
