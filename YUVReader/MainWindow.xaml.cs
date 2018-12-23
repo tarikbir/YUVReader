@@ -12,7 +12,7 @@ namespace YUVReader
     public partial class MainWindow : Window
     {
         int sizeHeight, sizeWidth;
-        
+
         enum YUVFormat
         {
             YUV444 = 444,
@@ -53,6 +53,10 @@ namespace YUVReader
             {
                 frame = bytes.Length / (pixelCount * 3);
                 int yCount = pixelCount / 3, uCount = yCount, vCount = uCount;
+                for(int f = 0; f < frame; f++)
+                {
+
+                }
             }
             else if (chOption422.IsChecked)
             {
@@ -62,8 +66,8 @@ namespace YUVReader
             else if (chOption420.IsChecked)
             {
                 frame = (bytes.Length * 2) / (pixelCount * 3);
-                int yCount = pixelCount, uCount = pixelCount/6, vCount = uCount;
-                int byteCount = pixelCount*3;
+                int yCount = pixelCount, uCount = pixelCount / 6, vCount = uCount;
+                int byteCount = pixelCount * 3;
                 for (int f = 0; f < frame; f++)
                 {
                     int i = 0, j = 0;
@@ -83,8 +87,8 @@ namespace YUVReader
                         v[i++] = bytes[f * byteCount + j++];
                     }
 
-                    byte[] data = new byte[yCount*3];
-                    for (int d = 0; d < yCount*3; d++)
+                    byte[] data = new byte[yCount * 3];
+                    for (int d = 0; d < yCount * 3; d++)
                     {
                         data[d] = y[d / 3];
                     }
@@ -101,14 +105,14 @@ namespace YUVReader
             else
                 MessageBox.Show("Error");
 
-            //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
+                //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
 
 
-            //mediaViewer.Source = openFileDialog.OpenFile();
-            //mediaViewer.Visibility = Visibility.Visible;
-            //mediaViewer.LoadedBehavior = MediaState.Manual;
-            //mediaViewer.Play();
-        }
+                //mediaViewer.Source = openFileDialog.OpenFile();
+                //mediaViewer.Visibility = Visibility.Visible;
+                //mediaViewer.LoadedBehavior = MediaState.Manual;
+                //mediaViewer.Play();
+            }
 
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
