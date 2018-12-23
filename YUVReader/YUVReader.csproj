@@ -64,6 +64,7 @@
     <Compile Include="PropertiesPage.xaml.cs">
       <DependentUpon>PropertiesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="YUV\RGBConvert.cs" />
     <Compile Include="YUV\RGBVideo.cs" />
     <Compile Include="YUV\YUV.cs" />
