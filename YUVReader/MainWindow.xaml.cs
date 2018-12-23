@@ -39,7 +39,7 @@ namespace YUVReader
             }
             else
             {
-                MessageBox.Show("No file has been selected!");
+                MessageBox.Show("No file has been selected!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -49,12 +49,11 @@ namespace YUVReader
             }
             catch (Exception ex)
             {
-                MessageBox.Show("File cannot be read!\n" + ex.Message);
+                MessageBox.Show("File cannot be read!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             
-            int width = 176, height = 144, pixelCount = width * height, frame;
-            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            int width = 176, height = 144;
 
             if (chOption444.IsChecked)
             {
@@ -69,7 +68,7 @@ namespace YUVReader
                 var a = RGBConvert.ConvertRGB(fileData, width, height, YUV.YUVFormat.YUV420);
             }
             else
-                MessageBox.Show("Error");
+                MessageBox.Show("Unkown error while selecting the format!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 //var bmp = YuvFormatter.YuvConverter.SourceFromYuv(bytes, 300, 300);
 

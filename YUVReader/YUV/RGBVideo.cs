@@ -10,9 +10,9 @@ namespace YUVReader
     public class RGBVideo
     {
         public Bitmap[] Source { get; set; }
+        public YUV.YUVFormat Format { get; set; }
         public int Frame { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-
     }
 }
