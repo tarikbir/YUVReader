@@ -5,21 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YUVReader"
         mc:Ignorable="d"
-        Title="PropertiesPage" Height="450" Width="800">
+        Title="PropertiesPage" Height="336" Width="537">
     <Grid>
-        <ListBox x:Name="FormatList" HorizontalAlignment="Left" Height="46" Margin="200,90,0,0" VerticalAlignment="Top" Width="300" SelectionChanged="FormatList_SelectionChanged">
-            <ListBoxItem Content="YUV 4:4:4"></ListBoxItem>
-            <ListBoxItem Content="YUV 4:2:2"></ListBoxItem>
-            <ListBoxItem Content="YUV 4:2:0"></ListBoxItem>
-        </ListBox>
-        <TextBox x:Name="HeightTextBox" HorizontalAlignment="Left" Height="23" Margin="200,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="125"/>
-        <TextBox x:Name="WidthTextBox" HorizontalAlignment="Left" Height="23" Margin="200,170,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="125"/>
+
+        <ComboBox x:Name="FormatList" HorizontalAlignment="Left" Height="23" Margin="199,103,0,0" VerticalAlignment="Top" Width="250" >
+            <ComboBoxItem Content="YUV 4:4:4"></ComboBoxItem>
+            <ComboBoxItem Content="YUV 4:2:2"></ComboBoxItem>
+            <ComboBoxItem Content="YUV 4:2:0"></ComboBoxItem>
+        </ComboBox>
+        <TextBox x:Name="HeightTextBox" HorizontalAlignment="Left" Height="23" Margin="200,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="125"/>
+        <TextBox x:Name="WidthTextBox" HorizontalAlignment="Left" Height="23" Margin="200,170,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="125"/>
         <Button x:Name="DefaultButton1" Content="Default" HorizontalAlignment="Left" Margin="330,140,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
         <Button x:Name="DefaultButton2" Content="Default" HorizontalAlignment="Left" Margin="330,170,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
-        <Button x:Name="ApplyButton" Content="Apply" HorizontalAlignment="Left" Margin="400,200,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
+        <Button x:Name="ApplyButton" Content="Apply" HorizontalAlignment="Left" Margin="330,220,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
         <Label x:Name="FormatLabel" Content="Format" HorizontalAlignment="Left" Margin="150,100,0,0" VerticalAlignment="Top" />
         <Label x:Name="Height" Content="Height" HorizontalAlignment="Left" Margin="150,136,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Width" Content="Width" HorizontalAlignment="Left" Margin="150,166,0,0" VerticalAlignment="Top"/>
-        
+
     </Grid>
 </Window>
