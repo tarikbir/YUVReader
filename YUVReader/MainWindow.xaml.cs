@@ -121,7 +121,7 @@ namespace YUVReader
             else
             {
                 Bitmap bitmap = new Bitmap(saveFileDialog.FileName);
-                bitmap.Save("C:\\Kullanıcılar\\YasinEmir\\Source\\repos\\tarikbir\\YUVReader\\Image.png");
+                //bitmap.Save(saveFileDialog.InitialDirectory + "//file//bit" + FRAME + ".bmp");
             }
             
         }

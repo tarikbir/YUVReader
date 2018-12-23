@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config.cs" />
     <Compile Include="YUV\RGBConvert.cs" />
     <Compile Include="YUV\RGBVideo.cs" />
     <Compile Include="YUV\YUV.cs" />

@@ -14,5 +14,23 @@ namespace YUVReader
         public int Frame { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public RGBVideo(): this(null, Config.DefaultFormat, 0, Config.DefaultWidth, Config.DefaultHeight)
+        { }
+
+        public RGBVideo(YUV.YUVFormat format, int width, int height): this(null, format, 0, width, height)
+        { }
+
+        public RGBVideo(YUV.YUVFormat format, int frame, int width, int height): this(null, format, frame, width, height)
+        { }
+
+        public RGBVideo(Bitmap[] source, YUV.YUVFormat format, int frame, int width, int height)
+        {
+            Source = source;
+            Format = format;
+            Frame = frame;
+            Width = width;
+            Height = height;
+        }
     }
 }
