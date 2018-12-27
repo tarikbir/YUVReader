@@ -4,6 +4,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
+//160202103 Tarık Bir
+//150202040 Yasin Emir Kutlu
+
 namespace YUVReader
 {
     public partial class MainWindow : Window
